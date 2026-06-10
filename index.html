@@ -1,230 +1,884 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio di Lorenzo Roghi</title>
-  <style>
-    /* Reset e impostazioni base */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      color: #333;
-    }
-    /* Header e navigazione */
-    header {
-      background: #333;
-      color: #fff;
-      padding: 1rem 0;
-      position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 1000;
-    }
-    nav {
-      display: flex;
-      justify-content: center;
-    }
-    nav ul {
-      list-style: none;
-      display: flex;
-    }
-    nav ul li {
-      margin: 0 1rem;
-    }
-    nav ul li a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 1rem;
-    }
-    /* Sezioni */
-    section {
-      padding: 80px 20px;
-      margin-top: 60px;
-    }
-    #home {
-      background: #f4f4f4;
-      text-align: center;
-    }
-    #projects {
-      background: #fff;
-    }
-    #cv {
-      background: #f4f4f4;
-    }
-    #contacts {
-      background: #fff;
-    }
-    .container {
-      max-width: 1000px;
-      margin: auto;
-    }
-    h1, h2, h3, h4 {
-      margin-bottom: 1rem;
-    }
-    p, li {
-      margin-bottom: 0.5rem;
-    }
-    /* Progetti */
-    .project {
-      margin-bottom: 2rem;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 1rem;
-    }
-    /* Bottone di download */
-    .download-btn {
-      display: inline-block;
-      background: #333;
-      color: #fff;
-      padding: 10px 20px;
-      text-decoration: none;
-      margin-top: 20px;
-      border-radius: 5px;
-    }
-    /* Footer */
-    footer {
-      background: #333;
-      color: #fff;
-      text-align: center;
-      padding: 1rem 0;
-      margin-top: 2rem;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lorenzo Roghi — Project Manager EPC</title>
+<meta name="description" content="Portfolio professionale di Lorenzo Roghi, Project Manager EPC nel settore delle energie rinnovabili.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:        #090D18;
+  --slate:        #131929;
+  --slate-2:      #1A2236;
+  --amber:        #F2A20C;
+  --amber-10:     rgba(242,162,12,0.10);
+  --amber-20:     rgba(242,162,12,0.20);
+  --amber-40:     rgba(242,162,12,0.40);
+  --white:        #F4F3EE;
+  --text-main:    #DDE2EC;
+  --text-mid:     #9AA3B8;
+  --text-dim:     #5C677D;
+  --border:       rgba(255,255,255,0.07);
+  --border-light: rgba(255,255,255,0.12);
+  --font-d: 'Space Grotesk', sans-serif;
+  --font-b: 'Inter', sans-serif;
+  --font-m: 'JetBrains Mono', monospace;
+  --ease: cubic-bezier(0.4,0,0.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--text-main);
+  font-family: var(--font-b);
+  font-size: 16px;
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 56px;
+  transition: background 0.4s var(--ease), border-color 0.4s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+nav.stuck {
+  background: rgba(9,13,24,0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom-color: var(--border);
+}
+.nav-mark {
+  font-family: var(--font-d);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+.nav-mark em { color: var(--amber); font-style: normal; }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  font-family: var(--font-m);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  transition: color 0.25s;
+}
+.nav-links a:hover { color: var(--amber); }
+
+/* ── HERO ── */
+#hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+#cvs {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  opacity: 0.5;
+}
+.hero-wrap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 56px;
+}
+.hero-tag {
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: up 0.7s 0.4s forwards;
+}
+.hero-name {
+  font-family: var(--font-d);
+  font-weight: 700;
+  font-size: clamp(4rem, 10vw, 9.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  margin-bottom: 36px;
+  opacity: 0;
+  animation: up 0.7s 0.6s forwards;
+}
+.hero-name .ghost {
+  -webkit-text-stroke: 1px rgba(255,255,255,0.18);
+  color: transparent;
+}
+.hero-desc {
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  color: var(--text-mid);
+  max-width: 480px;
+  line-height: 1.7;
+  margin-bottom: 52px;
+  opacity: 0;
+  animation: up 0.7s 0.8s forwards;
+}
+.hero-desc strong { color: var(--amber); font-weight: 500; }
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: up 0.7s 1.0s forwards;
+}
+.btn-a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 26px;
+  background: var(--amber);
+  color: #080B14;
+  font-family: var(--font-d);
+  font-weight: 600;
+  font-size: 0.88rem;
+  letter-spacing: 0.01em;
+  border-radius: 3px;
+  transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.btn-a:hover { background: #FFB82A; transform: translateY(-2px); box-shadow: 0 10px 36px var(--amber-20); }
+.btn-b {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 26px;
+  background: transparent;
+  color: var(--text-main);
+  font-family: var(--font-d);
+  font-weight: 500;
+  font-size: 0.88rem;
+  border: 1px solid var(--border-light);
+  border-radius: 3px;
+  transition: border-color 0.25s, color 0.25s, transform 0.25s;
+}
+.btn-b:hover { border-color: var(--amber-40); color: var(--amber); transform: translateY(-2px); }
+.hero-scroll {
+  position: absolute;
+  bottom: 36px; left: 56px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  opacity: 0;
+  animation: fade 1s 1.8s forwards;
+}
+.scroll-bar {
+  width: 0;
+  height: 1px;
+  background: var(--amber);
+  animation: grow 0.9s 2.1s forwards;
+}
+.scroll-lbl {
+  font-family: var(--font-m);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* ── SHARED SECTION ── */
+section { padding: 128px 56px; }
+.inner { max-width: 1280px; margin: 0 auto; }
+.sec-eye {
+  font-family: var(--font-m);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 14px;
+}
+.sec-title {
+  font-family: var(--font-d);
+  font-weight: 700;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  letter-spacing: -0.025em;
+  color: var(--white);
+  line-height: 1.08;
+  margin-bottom: 72px;
+}
+
+/* ── ABOUT ── */
+#about { background: var(--black); border-top: 1px solid var(--border); }
+.about-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 96px; align-items: start; }
+.about-copy p { color: var(--text-mid); font-size: 1rem; line-height: 1.85; margin-bottom: 18px; }
+.about-copy p strong { color: var(--text-main); font-weight: 500; }
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.stat {
+  background: var(--slate);
+  border: 1px solid var(--border);
+  padding: 28px 24px;
+}
+.stat:nth-child(1) { border-radius: 10px 0 0 0; }
+.stat:nth-child(2) { border-radius: 0 10px 0 0; }
+.stat:nth-child(3) { border-radius: 0 0 0 10px; }
+.stat:nth-child(4) { border-radius: 0 0 10px 0; }
+.stat-n {
+  font-family: var(--font-d);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--amber);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-l {
+  font-family: var(--font-m);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* ── EXPERIENCE ── */
+#experience { background: var(--slate); }
+.timeline { position: relative; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 160px;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: var(--border);
+}
+.t-item {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 0;
+  padding-bottom: 64px;
+  position: relative;
+}
+.t-item:last-child { padding-bottom: 0; }
+.t-date { padding-right: 36px; padding-top: 3px; text-align: right; }
+.t-period {
+  font-family: var(--font-m);
+  font-size: 0.67rem;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.t-badge {
+  display: inline-block;
+  margin-top: 7px;
+  padding: 2px 8px;
+  background: var(--amber-10);
+  border: 1px solid var(--amber-20);
+  border-radius: 2px;
+  font-family: var(--font-m);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.t-dot {
+  position: absolute;
+  left: 160px;
+  top: 5px;
+  width: 9px; height: 9px;
+  background: var(--amber);
+  border-radius: 50%;
+  transform: translateX(-4px);
+  box-shadow: 0 0 0 3px var(--slate), 0 0 16px var(--amber-40);
+}
+.t-body { padding-left: 40px; }
+.t-co {
+  font-family: var(--font-m);
+  font-size: 0.67rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 5px;
+}
+.t-role {
+  font-family: var(--font-d);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 14px;
+}
+.t-desc { font-size: 0.9rem; color: var(--text-mid); line-height: 1.75; margin-bottom: 16px; }
+.tags { display: flex; flex-wrap: wrap; gap: 7px; }
+.tag {
+  padding: 4px 11px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-family: var(--font-m);
+  font-size: 0.6rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* ── PROJECTS ── */
+#projects { background: var(--black); }
+.proj-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  gap: 1px;
+  background: var(--border);
+}
+.proj-card {
+  background: var(--slate);
+  padding: 44px 36px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s var(--ease);
+}
+.proj-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--amber);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease);
+}
+.proj-card:hover::after { transform: scaleX(1); }
+.proj-card:hover { background: var(--slate-2); }
+.proj-num {
+  font-family: var(--font-m);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--text-dim);
+  margin-bottom: 24px;
+}
+.proj-icon {
+  width: 44px; height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--amber-10);
+  border: 1px solid var(--amber-20);
+  border-radius: 8px;
+  margin-bottom: 22px;
+}
+.proj-icon svg { width: 22px; height: 22px; stroke: var(--amber); fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.proj-title {
+  font-family: var(--font-d);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--white);
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+.proj-desc { font-size: 0.86rem; color: var(--text-mid); line-height: 1.75; margin-bottom: 22px; }
+.proj-meta {
+  font-family: var(--font-m);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+/* ── SKILLS ── */
+#skills { background: var(--slate); }
+.skill-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 52px; }
+.skill-group-title {
+  font-family: var(--font-m);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.s-tag {
+  padding: 6px 14px;
+  background: var(--amber-10);
+  border: 1px solid var(--amber-20);
+  border-radius: 3px;
+  font-size: 0.8rem;
+  color: var(--text-main);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  cursor: default;
+}
+.s-tag:hover { background: var(--amber-20); border-color: var(--amber-40); color: var(--amber); }
+
+/* ── CONTACT ── */
+#contact { background: var(--black); border-top: 1px solid var(--border); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 96px; align-items: center; }
+.contact-h {
+  font-family: var(--font-d);
+  font-weight: 700;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  letter-spacing: -0.03em;
+  color: var(--white);
+  line-height: 1.05;
+}
+.contact-h em { color: var(--amber); font-style: normal; }
+.contact-sub { margin-top: 16px; font-size: 0.95rem; color: var(--text-dim); line-height: 1.7; }
+.c-links { display: flex; flex-direction: column; gap: 14px; }
+.c-link {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 22px;
+  background: var(--slate);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  transition: border-color 0.25s, background 0.25s, transform 0.25s;
+}
+.c-link:hover { border-color: var(--amber-40); background: var(--slate-2); transform: translateX(5px); }
+.c-icon {
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--amber-10);
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.c-icon svg { width: 18px; height: 18px; stroke: var(--amber); fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.c-link-info { flex: 1; }
+.c-link-lbl {
+  font-family: var(--font-m);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 2px;
+}
+.c-link-val { font-size: 0.9rem; color: var(--text-main); font-weight: 500; }
+.c-arr { font-size: 0.8rem; color: var(--text-dim); transition: color 0.25s, transform 0.25s; }
+.c-link:hover .c-arr { color: var(--amber); transform: translateX(4px); }
+
+/* ── FOOTER ── */
+footer {
+  padding: 22px 56px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ft {
+  font-family: var(--font-m);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes up   { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fade { from { opacity:0; } to { opacity:1; } }
+@keyframes grow { from { width:0; } to { width:48px; } }
+.reveal { opacity:0; transform:translateY(28px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+.reveal.on { opacity:1; transform:translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  nav { padding: 18px 24px; }
+  .nav-links { display: none; }
+  section { padding: 80px 24px; }
+  .hero-wrap { padding: 0 24px; }
+  .hero-scroll { left: 24px; }
+  .about-grid { grid-template-columns: 1fr; gap: 52px; }
+  .timeline::before { left: 0; }
+  .t-item { grid-template-columns: 1fr; }
+  .t-date { text-align: left; padding-right: 0; padding-bottom: 10px; }
+  .t-dot { left: -1px; }
+  .t-body { padding-left: 20px; }
+  .proj-grid { grid-template-columns: 1fr; }
+  .skill-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; gap: 52px; }
+  footer { flex-direction: column; gap: 8px; text-align: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+}
+</style>
 </head>
 <body>
 
-  <!-- Header e navigazione -->
-  <header>
-    <nav>
-      <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#projects">Ultime Novità</a></li>
-        <li><a href="#cv">CV</a></li>
-        <li><a href="#contacts">Contatti</a></li>
-      </ul>
-    </nav>
-  </header>
+<!-- ─────────────── NAV ─────────────── -->
+<nav id="nav">
+  <div class="nav-mark">LR<em>.</em></div>
+  <ul class="nav-links">
+    <li><a href="#about">Profilo</a></li>
+    <li><a href="#experience">Esperienza</a></li>
+    <li><a href="#projects">Progetti</a></li>
+    <li><a href="#skills">Competenze</a></li>
+    <li><a href="#contact">Contatti</a></li>
+  </ul>
+</nav>
 
-  <!-- Sezione Home -->
-  <section id="home">
-    <div class="container">
-      <h1>Benvenuti sul Portfolio di Lorenzo Roghi</h1>
-      <p>Ciao, sono Lorenzo Roghi, un progettista tecnico specializzato in disegno 2D/3D con una forte passione per le tecnologie rinnovabili e l’innovazione sostenibile.</p>
-      <p>Esplora il sito per conoscere i miei ultimi progetti, visualizzare il mio CV completo e contattarmi per collaborazioni e proposte.</p>
+<!-- ─────────────── HERO ─────────────── -->
+<section id="hero">
+  <canvas id="cvs"></canvas>
+  <div class="hero-wrap">
+    <p class="hero-tag">Portfolio professionale</p>
+    <h1 class="hero-name">Lorenzo<br><span class="ghost">Roghi</span></h1>
+    <p class="hero-desc">
+      <strong>Project Manager EPC</strong> nel settore delle energie rinnovabili.
+      Gestisco gare d'appalto, contratti, team e cantieri dall'inizio alla chiusura.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-a">Contattami →</a>
+      <a href="#experience" class="btn-b">Esplora il profilo</a>
     </div>
-  </section>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-bar"></div>
+    <span class="scroll-lbl">Scorri</span>
+  </div>
+</section>
 
-  <!-- Sezione Ultime Novità -->
-  <section id="projects">
-    <div class="container">
-      <h2>Ultime Novità</h2>
-      <!-- Post linkedin incorporato -->
-      <div class="project">
-      <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7295794125637910528?collapsed=1" height="399" width="504" frameborder="0" allowfullscreen="" title="Post incorporato"></iframe>
+<!-- ─────────────── ABOUT ─────────────── -->
+<section id="about">
+  <div class="inner">
+    <p class="sec-eye reveal">Profilo</p>
+    <div class="about-grid">
+      <div class="about-copy reveal">
+        <p>Gestisco l'intero ciclo di vita dei progetti EPC: dalla partecipazione alle gare d'appalto fino alla chiusura del cantiere. Coordino team interni, subappaltatori e relazioni con i clienti nelle fasi più critiche — contratto, progettazione e consegna.</p>
+        <p>Ho un background tecnico in progettazione impiantistica e disegno 2D/3D che mi permette di muovermi tra il linguaggio dell'ingegneria e quello del business senza perdere dettagli in nessun senso.</p>
+        <p><strong>Attualmente in Solarys</strong>, azienda del Gruppo Everest, dove mi occupo di sviluppo commerciale, contract management e coordinamento operativo nel settore fotovoltaico ed EPC.</p>
       </div>
-      <!-- Esempio di progetto -->
-      <div class="project">
-        <h3>Data Center Aruba</h3>
-       <img src="images/IT4DcA.jpg" alt="Locandina inaugurazione del nuovo Data Center Aruba a Roma" style="max-width:100%; height:auto;">
-        <p> Entusiasta di annunciare l'inaugurazione del nuovo Data Center di Aruba al, progetto che ho potuto seguire fin dal principio con tutto il team di Aruba Studio. </p>
-        <small>Ottobre 2024</small>
+      <div class="stats reveal">
+        <div class="stat"><div class="stat-n">EPC</div><div class="stat-l">Settore principale</div></div>
+        <div class="stat"><div class="stat-n">360°</div><div class="stat-l">Copertura progetto</div></div>
+        <div class="stat"><div class="stat-n">3+</div><div class="stat-l">Anni di esperienza</div></div>
+        <div class="stat"><div class="stat-n">B2</div><div class="stat-l">Inglese</div></div>
       </div>
-      
-      <!-- Puoi aggiungere ulteriori progetti in ordine cronologico inverso -->
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Sezione CV -->
-  <section id="cv">
-    <div class="container">
-      <h2>Curriculum Vitae</h2>
-      <!-- Contenuto completo del CV -->
-      <h3>Profilo Professionale</h3>
-      <p>Progettista tecnico specializzato nel disegno 2D/3D, con esperienza nell’utilizzo dei principali software Autodesk (AutoCAD, Revit, Inventor, Fusion 360) e precedente conoscenza di SolidWorks. Attualmente impegnato nella progettazione di reti elettriche, impianti fotovoltaici e disegni impiantistici per Data Center. Forte interesse per la ricerca e sviluppo, in particolare nel campo delle tecnologie rinnovabili e dell’innovazione sostenibile. Ottime capacità di coordinamento, supervisione in cantiere e problem solving.</p>
-      
-      <h3>Esperienza Professionale</h3><br>
-      <h4>Aruba Studio – Aruba S.P.A. Progettista Tecnico<br>
-      <p>Ottobre 2023 – Presente<br>
-        Assunzione a Tempo Indeterminato<br>
-      Progettazione di reti elettriche, impianti fotovoltaici e disegni impiantistici per Data Center. Coordinamento con i principali fornitori e supervisione dei lavori in cantiere. Ricerca e sviluppo nell’ambito Data Center. Supporto alla direzione dei lavori tramite analisi tecniche e redazione di documentazione progettuale.</p>
-      <br>
-      <h4>Aruba Studio – Aruba S.P.A. Progettazione e Ricerca</h4>
-      <p>Marzo 2023 – Agosto 2023<br>
-        Stage Curriculare<br>
-      Collaborazione allo sviluppo di progetti nel campo delle energie rinnovabili e degli impianti domotici. Supporto nella progettazione di reti elettriche e impianti, focalizzandosi sull’ottimizzazione e l’efficienza energetica. Assistenza nella direzione dei lavori e nella gestione dei sopralluoghi in cantiere.</p>
-      <br>
-      <h4>Poste Italiane SPA PortaLettere</h4>
-      <p>Giugno 2021 – Ottobre 2021<br>
-      Consegna di posta e pacchi a privati e imprese. Gestione della posta raccomandata e raccolta delle firme dei destinatari.</p>
-      <br>
-      <h3>Istruzione e Formazione</h3>
-      <p><strong>Istituto Tecnico Superiore Energia e Ambiente – Colle Val D’Elsa (Siena)</strong><br>
-      Corso INDUSTRIA@ENERGIA21<br>
-      Ottobre 2021 – Settembre 2023<br>
-      Titolo: Tecnico superiore per la gestione e la verifica di impianti energetici<br>
-      Specializzazione: Tecnico Superiore per l’Industria 4.0: progettazione digitale e sostenibilità energetica dei sistemi, dei prodotti e dei processi<br>
-      Competenze acquisite: Progettazione digitale 2D/3D (CAD) e realizzazione di disegni tecnici, valutazione delle esigenze di manutenzione, ottimizzazione dei processi industriali, progettazione e supervisione di interventi di riqualificazione ed efficientamento energetico, utilizzo di tecnologie per l’automazione industriale come PLC o CNC e soluzioni residenziali IoT.</p>
-      <br>
-      <h3>Volontariato</h3>
-      <p><strong>Scout AGESCI – Gruppo Scout Arezzo 7</strong><br>
-      Settembre 2008 – Agosto 2022<br>
-      Soft Skills sviluppate: leadership, team working, comunicazione efficace, gestione dei conflitti. Competenze acquisite: pianificazione di attività per gruppi, coordinamento e gestione di team, organizzazione di eventi ed escursioni, formazione di giovani partecipanti su leadership, autonomia e responsabilità.</p>
-      <br>
-      <h3>Competenze Tecniche</h3>
-      <p>Software CAD: AutoCAD, Revit, Inventor, Fusion 360, con precedenti esperienze con SolidWorks.<br>
-      Progettazione Impiantistica: Reti elettriche BT e MT tramite software Progetto Integra, impianti fotovoltaici, disegni planimetrici per Data Center, uffici e impianti residenziali.<br>
-      Tecnologie Rinnovabili: Conoscenza approfondita dei sistemi per la produzione e gestione di energia da fonti rinnovabili.<br>
-      Automazione Industriale: Nozioni di PLC, HMI, CNC e applicazioni IoT.<br>
-      Ricerca e Sviluppo: Aggiornamento continuo sulle novità tecnologiche e soluzioni per l’ottimizzazione energetica, prototipazione tramite stampa 3D.<br>
-      Pacchetto OFFICE 365: Conoscenza avanzata di Word, Powerpoint, Excel, Sharepoint e conoscenza base di Project.</p>
-      <br>
-      <h3>Lingue</h3>
-      <p>Italiano: Madrelingua<br>
-      Inglese: Buona comprensione orale e scritta (Livello B2)</p>
-      <br>
-      <h3>Ulteriori Informazioni</h3>
-      <p>Orientamento all’innovazione: Forte passione per la ricerca di soluzioni tecnologiche e sostenibili.<br>
-      Teamwork e leadership: Esperienza nella collaborazione con team multidisciplinari e nella gestione dei rapporti con fornitori e colleghi.<br>
-      Problem Solving: Attitudine alla risoluzione di problematiche tecniche complesse e al miglioramento continuo.</p>
-      
+<!-- ─────────────── EXPERIENCE ─────────────── -->
+<section id="experience">
+  <div class="inner">
+    <p class="sec-eye reveal">Esperienza</p>
+    <h2 class="sec-title reveal">Percorso professionale</h2>
+    <div class="timeline">
+
+      <!-- SOLARYS -->
+      <div class="t-item reveal">
+        <div class="t-date">
+          <div class="t-period">2024<br>—<br>Oggi</div>
+          <div class="t-badge">In corso</div>
+        </div>
+        <div class="t-dot"></div>
+        <div class="t-body">
+          <div class="t-co">Solarys — Everest Group</div>
+          <div class="t-role">Project Manager EPC</div>
+          <div class="t-desc">Gestione end-to-end dei progetti EPC: iscrizione a gare d'appalto, redazione di allegati tecnici contrattuali, coordinamento di team interni e subappaltatori, gestione delle relazioni con i clienti dalla fase contrattuale alla chiusura del cantiere. Controllo documentazione ITP, sviluppo di strumenti digitali interni per il tracciamento delle commesse e la gestione del personale.</div>
+          <div class="tags">
+            <span class="tag">Gare d'appalto</span>
+            <span class="tag">Contract Management</span>
+            <span class="tag">Team Management</span>
+            <span class="tag">Subappalti</span>
+            <span class="tag">Fotovoltaico</span>
+            <span class="tag">ITP</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARUBA FULL TIME -->
+      <div class="t-item reveal">
+        <div class="t-date">
+          <div class="t-period">Ott 2023<br>—<br>2024</div>
+        </div>
+        <div class="t-dot"></div>
+        <div class="t-body">
+          <div class="t-co">Aruba Studio — Aruba S.p.A.</div>
+          <div class="t-role">Progettista Tecnico</div>
+          <div class="t-desc">Progettazione di reti elettriche, impianti fotovoltaici e disegni impiantistici per Data Center. Coordinamento con i principali fornitori e supervisione in cantiere. Supporto alla direzione dei lavori tramite analisi tecniche e redazione di documentazione progettuale.</div>
+          <div class="tags">
+            <span class="tag">AutoCAD</span>
+            <span class="tag">Revit</span>
+            <span class="tag">Reti Elettriche</span>
+            <span class="tag">Data Center</span>
+            <span class="tag">Fotovoltaico</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARUBA STAGE -->
+      <div class="t-item reveal">
+        <div class="t-date">
+          <div class="t-period">Mar — Ago<br>2023</div>
+        </div>
+        <div class="t-dot"></div>
+        <div class="t-body">
+          <div class="t-co">Aruba Studio — Aruba S.p.A.</div>
+          <div class="t-role">Stage Curriculare</div>
+          <div class="t-desc">Collaborazione allo sviluppo di progetti nel campo delle energie rinnovabili e degli impianti domotici. Supporto nella progettazione di reti elettriche e nella direzione dei lavori in cantiere.</div>
+          <div class="tags">
+            <span class="tag">Energie Rinnovabili</span>
+            <span class="tag">Domotica</span>
+            <span class="tag">Cantiere</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ITS -->
+      <div class="t-item reveal">
+        <div class="t-date">
+          <div class="t-period">2021<br>—<br>2023</div>
+        </div>
+        <div class="t-dot"></div>
+        <div class="t-body">
+          <div class="t-co">ITS Energia e Ambiente — Colle Val d'Elsa</div>
+          <div class="t-role">Diploma ITS — Tecnico Superiore Impianti Energetici</div>
+          <div class="t-desc">Specializzazione Industria 4.0: progettazione digitale e sostenibilità energetica dei sistemi, prodotti e processi. Competenze in progettazione 2D/3D, automazione industriale (PLC, CNC) e soluzioni IoT residenziali.</div>
+          <div class="tags">
+            <span class="tag">Progettazione Digitale</span>
+            <span class="tag">Industria 4.0</span>
+            <span class="tag">Sostenibilità</span>
+            <span class="tag">PLC / CNC</span>
+          </div>
+        </div>
+      </div>
+
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Sezione Contatti -->
-  <section id="contacts">
-    <div class="container">
-      <h2>Contatti</h2>
-      <p>Per collaborazioni e proposte, non esitare a contattarmi:</p>
-      <ul>
-        <li>Email: <a href="mailto:info@lorenzoroghi.it">info@lorenzoroghi.it</a></li>
-        <li>Cellulare: <a href="tel:3319152973">331 9152973</a></li>
-        <li>LinkedIn: <a href="https://linkedin.com/in/lorenzoroghi" target="_blank">linkedin.com/in/lorenzoroghi</a></li>
-      </ul>
+<!-- ─────────────── PROJECTS ─────────────── -->
+<section id="projects">
+  <div class="inner">
+    <p class="sec-eye reveal">Progetti</p>
+    <h2 class="sec-title reveal">Iniziative e realizzazioni</h2>
+    <div class="proj-grid reveal">
+
+      <div class="proj-card">
+        <div class="proj-num">01 / 03</div>
+        <div class="proj-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <div class="proj-title">Solarys IS — Sistema Gestione Interna</div>
+        <div class="proj-desc">Sistema web full-stack per la gestione delle ferie, il tracciamento delle ore per commessa e il coordinamento dei cantieri. Sviluppato internamente su Node.js con database SQLite, integrazione Office 365 e workflow di approvazione a due livelli.</div>
+        <div class="proj-meta">Node.js · SQLite · Office 365</div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-num">02 / 03</div>
+        <div class="proj-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="proj-title">Iniziativa Drone — Ottimizzazione Cantieri</div>
+        <div class="proj-desc">Proposta e avvio di un programma drone aziendale con percorso di formazione dedicato ai dipendenti. Obiettivo: ridurre i tempi di rilievo tra la fase di progettazione e il cantiere, abbattendo la necessità di sopralluoghi ripetuti.</div>
+        <div class="proj-meta">Process Improvement · Survey · Training</div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-num">03 / 03</div>
+        <div class="proj-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="proj-title">Data Center Aruba — Roma</div>
+        <div class="proj-desc">Progettazione impiantistica e supervisione in cantiere del nuovo Data Center Aruba a Roma. Seguito dalla fase iniziale fino all'inaugurazione, con coordinamento dei fornitori principali e supporto alla direzione tecnica dei lavori.</div>
+        <div class="proj-meta">EPC · Progettazione · Cantiere · Data Center</div>
+      </div>
+
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Lorenzo Roghi. Tutti i diritti riservati.</p>
-  </footer>
+<!-- ─────────────── SKILLS ─────────────── -->
+<section id="skills">
+  <div class="inner">
+    <p class="sec-eye reveal">Competenze</p>
+    <h2 class="sec-title reveal">Aree di expertise</h2>
+    <div class="skill-grid">
+      <div class="reveal">
+        <div class="skill-group-title">Project Management</div>
+        <div class="skill-tags">
+          <span class="s-tag">Project Management EPC</span>
+          <span class="s-tag">Contract Management</span>
+          <span class="s-tag">Gare d'appalto</span>
+          <span class="s-tag">Business Development</span>
+          <span class="s-tag">Gestione subappalti</span>
+          <span class="s-tag">Documentazione ITP</span>
+          <span class="s-tag">Coordinamento cantiere</span>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="skill-group-title">Progettazione Tecnica</div>
+        <div class="skill-tags">
+          <span class="s-tag">AutoCAD</span>
+          <span class="s-tag">Revit</span>
+          <span class="s-tag">Inventor</span>
+          <span class="s-tag">Fusion 360</span>
+          <span class="s-tag">Progetto Integra</span>
+          <span class="s-tag">Impianti Fotovoltaici</span>
+          <span class="s-tag">Reti Elettriche BT/MT</span>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="skill-group-title">Digital & Tools</div>
+        <div class="skill-tags">
+          <span class="s-tag">Node.js</span>
+          <span class="s-tag">SQLite</span>
+          <span class="s-tag">Office 365</span>
+          <span class="s-tag">SharePoint</span>
+          <span class="s-tag">Excel Avanzato</span>
+          <span class="s-tag">GitHub</span>
+          <span class="s-tag">Stampa 3D</span>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="skill-group-title">Soft Skills</div>
+        <div class="skill-tags">
+          <span class="s-tag">Coordinamento team</span>
+          <span class="s-tag">Problem solving</span>
+          <span class="s-tag">Comunicazione clienti</span>
+          <span class="s-tag">Leadership</span>
+          <span class="s-tag">Innovazione di processo</span>
+          <span class="s-tag">Gestione conflitti</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- Script per lo smooth scrolling -->
-  <script>
-    document.querySelectorAll('nav a').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        target.scrollIntoView({
-          behavior: 'smooth'
-        });
-      });
-    });
-  </script>
+<!-- ─────────────── CONTACT ─────────────── -->
+<section id="contact">
+  <div class="inner">
+    <div class="contact-grid">
+      <div class="reveal">
+        <h2 class="contact-h">Parliamo<br><em>insieme.</em></h2>
+        <p class="contact-sub">Disponibile per collaborazioni, proposte professionali e nuove opportunità nel settore EPC e rinnovabili.</p>
+      </div>
+      <div class="c-links reveal">
+        <a href="mailto:info@lorenzoroghi.it" class="c-link">
+          <div class="c-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="c-link-info">
+            <div class="c-link-lbl">Email</div>
+            <div class="c-link-val">info@lorenzoroghi.it</div>
+          </div>
+          <span class="c-arr">→</span>
+        </a>
+        <a href="tel:3319152973" class="c-link">
+          <div class="c-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l1.09-1.09a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div class="c-link-info">
+            <div class="c-link-lbl">Telefono</div>
+            <div class="c-link-val">331 915 2973</div>
+          </div>
+          <span class="c-arr">→</span>
+        </a>
+        <a href="https://linkedin.com/in/lorenzoroghi" target="_blank" rel="noopener" class="c-link">
+          <div class="c-icon">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </div>
+          <div class="c-link-info">
+            <div class="c-link-lbl">LinkedIn</div>
+            <div class="c-link-val">linkedin.com/in/lorenzoroghi</div>
+          </div>
+          <span class="c-arr">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
 
+<footer>
+  <span class="ft">© 2025 Lorenzo Roghi</span>
+  <span class="ft">lorenzoroghi.it</span>
+</footer>
+
+<script>
+/* ── HERO CANVAS — particle network ── */
+const cvs = document.getElementById('cvs');
+const ctx = cvs.getContext('2d');
+let W, H, pts = [], raf;
+
+function resize() {
+  W = cvs.width  = cvs.offsetWidth;
+  H = cvs.height = cvs.offsetHeight;
+}
+
+function init(n = 55) {
+  pts = Array.from({length: n}, () => ({
+    x: Math.random() * W, y: Math.random() * H,
+    vx: (Math.random() - 0.5) * 0.28,
+    vy: (Math.random() - 0.5) * 0.28,
+    r: Math.random() * 1.6 + 0.6
+  }));
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  const MAX = 190;
+
+  pts.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0 || p.x > W) p.vx *= -1;
+    if (p.y < 0 || p.y > H) p.vy *= -1;
+  });
+
+  for (let i = 0; i < pts.length; i++) {
+    for (let j = i + 1; j < pts.length; j++) {
+      const dx = pts[i].x - pts[j].x;
+      const dy = pts[i].y - pts[j].y;
+      const d  = Math.sqrt(dx * dx + dy * dy);
+      if (d < MAX) {
+        const a = (1 - d / MAX) * 0.45;
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(242,162,12,${a})`;
+        ctx.lineWidth = 0.6;
+        ctx.moveTo(pts[i].x, pts[i].y);
+        ctx.lineTo(pts[j].x, pts[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  pts.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(242,162,12,0.55)';
+    ctx.fill();
+  });
+
+  raf = requestAnimationFrame(draw);
+}
+
+window.addEventListener('resize', () => { resize(); init(); });
+resize(); init(); draw();
+
+/* ── NAV SCROLL ── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('stuck', window.scrollY > 56);
+}, {passive: true});
+
+/* ── REVEAL ON SCROLL ── */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); }
+  });
+}, {threshold: 0.1, rootMargin: '0px 0px -36px 0px'});
+
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
 </body>
 </html>
