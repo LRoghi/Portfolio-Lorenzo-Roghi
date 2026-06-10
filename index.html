@@ -221,7 +221,28 @@ section { padding: 128px 56px; }
 
 /* ── ABOUT ── */
 #about { background: var(--black); border-top: 1px solid var(--border); }
-.about-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 96px; align-items: start; }
+.about-grid { display: grid; grid-template-columns: 240px 1fr 0.75fr; gap: 64px; align-items: start; }
+.about-photo-wrap { position: sticky; top: 100px; }
+.about-photo {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  filter: grayscale(20%);
+  transition: filter 0.4s;
+}
+.about-photo:hover { filter: grayscale(0%); }
+.about-photo-name {
+  font-family: var(--font-m);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: 12px;
+  text-align: center;
+}
 .about-copy p { color: var(--text-mid); font-size: 1rem; line-height: 1.85; margin-bottom: 18px; }
 .about-copy p strong { color: var(--text-main); font-weight: 500; }
 .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
@@ -497,6 +518,8 @@ footer {
   .hero-wrap { padding: 0 24px; }
   .hero-scroll { left: 24px; }
   .about-grid { grid-template-columns: 1fr; gap: 52px; }
+  .about-photo-wrap { position: static; display: flex; flex-direction: column; align-items: center; }
+  .about-photo { width: 180px; aspect-ratio: 1/1; border-radius: 50%; }
   .timeline::before { left: 0; }
   .t-item { grid-template-columns: 1fr; }
   .t-date { text-align: left; padding-right: 0; padding-bottom: 10px; }
@@ -524,6 +547,7 @@ footer {
     <li><a href="#projects">Progetti</a></li>
     <li><a href="#skills">Competenze</a></li>
     <li><a href="#contact">Contatti</a></li>
+    <li><a href="aggiornamenti.html">Aggiornamenti</a></li>
   </ul>
 </nav>
 
@@ -553,6 +577,11 @@ footer {
   <div class="inner">
     <p class="sec-eye reveal">Profilo</p>
     <div class="about-grid">
+      <div class="about-photo-wrap reveal">
+        <!-- FOTO: assicurati che il nome del file corrisponda esattamente, inclusa l'estensione (.jpg, .png, ecc.) -->
+        <img src="images/FotoProfilo.jpg" alt="Lorenzo Roghi" class="about-photo">
+        <p class="about-photo-name">Lorenzo Roghi</p>
+      </div>
       <div class="about-copy reveal">
         <p>Gestisco l'intero ciclo di vita dei progetti EPC: dalla partecipazione alle gare d'appalto fino alla chiusura del cantiere. Coordino team interni, subappaltatori e relazioni con i clienti nelle fasi più critiche — contratto, progettazione e consegna.</p>
         <p>Ho un background tecnico in progettazione impiantistica e disegno 2D/3D che mi permette di muovermi tra il linguaggio dell'ingegneria e quello del business senza perdere dettagli in nessun senso.</p>
