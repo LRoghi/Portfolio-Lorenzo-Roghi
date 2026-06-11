@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lorenzo Roghi | Project Manager & Energy Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* === CSS VARIABLES & THEMES === */
+        :root {
+            /* DARK MODE (Default) */
+            --bg-color: #050505;
+            --text-primary: #ffffff;
+            --text-secondary: #8a8a93;
+            --accent-primary: #00d2ff;
+            --accent-secondary: #3a7bd5;
+            --glass-bg: rgba(15, 15, 15, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --card-bg: rgba(25, 25, 25, 0.4);
+            --card-hover: rgba(35, 35, 35, 0.8);
+            --mesh-color: rgba(0, 210, 255, 0.15);
+            --font-main: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body.light-mode {
+            /* LIGHT MODE */
+            --bg-color: #fbfbfd;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent-primary: #0071e3;
+            --accent-secondary: #42a5f5;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --card-hover: #ffffff;
+            --mesh-color: rgba(0, 113, 227, 0.15);
+        }
+
+        /* === LANGUAGE TOGGLE CSS === */
+        body.lang-it .lang-en { display: none !important; }
+        body.lang-en .lang-it { display: none !important; }
+
+        /* === RESET & BASE === */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            overflow-x: hidden;
+        }
+
+        /* === BACKGROUND MESH CANVAS === */
+        #bg-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; pointer-events: none;
+        }
+        .bg-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 50% 50%, transparent 0%, var(--bg-color) 100%);
+            z-index: -1; pointer-events: none; transition: background 0.5s ease;
+        }
+
+        /* === UI CONTROLS (TOP RIGHT) === */
+        .controls-container {
+            position: fixed; top: 0; right: 5vw; z-index: 1000;
+            display: flex; flex-direction: column; align-items: center; gap: 15px;
+        }
+
+        /* Language Switcher */
+        .lang-switch {
+            margin-top: 25px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        .lang-switch:hover { border-color: var(--accent-primary); color: var(--accent-primary); }
+
+        /* Lightbulb Switch */
+        .pull-string {
+            width: 2px; height: 30px;
+            background-color: var(--text-secondary);
+            cursor: pointer; position: relative; transform-origin: top;
+            transition: height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .lightbulb {
+            width: 26px; height: 36px;
+            cursor: pointer; fill: transparent; stroke: var(--text-secondary);
+            stroke-width: 2; transition: all 0.3s ease; transform-origin: top;
+        }
+        .theme-switch-wrapper { display: flex; flex-direction: column; align-items: center; }
+        .theme-switch-wrapper:hover .pull-string { height: 40px; }
+        .theme-switch-wrapper:active .pull-string { height: 60px; }
+        .theme-switch-wrapper:active .lightbulb { transform: translateY(20px); }
+
+        body.light-mode .lightbulb {
+            fill: #fcd34d; stroke: #f59e0b; filter: drop-shadow(0 0 10px rgba(252, 211, 77, 0.8));
+        }
+
+        /* === HERO SECTION === */
+        .hero {
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            padding: 0 2rem; position: relative;
+        }
+        .hero-title {
+            font-size: clamp(4rem, 10vw, 8rem); font-weight: 900; letter-spacing: -0.04em;
+            line-height: 1; margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            opacity: 0; animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+        }
+        .hero-role {
+            font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: 600; letter-spacing: 0.2em;
+            text-transform: uppercase; color: var(--accent-primary); margin-bottom: 1rem;
+            opacity: 0; animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+        }
+        .hero-sub {
+            font-family: var(--font-mono); font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+            color: var(--text-secondary); opacity: 0;
+            animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+        }
+        .scroll-indicator {
+            position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%);
+            font-size: 0.9rem; font-weight: 600; color: var(--text-secondary);
+            opacity: 0; animation: fadeInOut 2.5s infinite 1.5s;
+        }
+
+        /* === NAVIGATION === */
+        nav {
+            position: sticky; top: 2rem; z-index: 100; display: flex; justify-content: center;
+            margin: 0 auto 4rem auto; width: max-content;
+            background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); border-radius: 40px; padding: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); opacity: 0; transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        nav.visible { opacity: 1; transform: translateY(0); }
+        .nav-btn {
+            background: transparent; border: none; color: var(--text-secondary);
+            padding: 0.75rem 2rem; font-size: 0.95rem; font-weight: 600; border-radius: 30px;
+            cursor: pointer; transition: all 0.3s ease; font-family: var(--font-main);
+        }
+        .nav-btn:hover { color: var(--text-primary); }
+        .nav-btn.active { background: var(--text-primary); color: var(--bg-color); }
+
+        /* === MAIN CONTENT AREA === */
+        main { max-width: 1200px; margin: 0 auto; padding: 0 2rem 5rem 2rem; }
+        .view-section { display: none; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .view-section.active { display: block; opacity: 1; transform: translateY(0); }
+        h2.section-title {
+            font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 3rem;
+            display: flex; align-items: center; gap: 1rem;
+        }
+        h2.section-title::after { content: ''; height: 1px; flex-grow: 1; background: var(--glass-border); }
+
+        /* === PROFILE PICTURE CONTAINER === */
+        .profile-container {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            margin-top: 1.5rem;
+        }
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-primary);
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.15);
+            flex-shrink: 0;
+            transition: all 0.5s ease;
+        }
+        body.light-mode .profile-pic {
+            box-shadow: 0 10px 30px rgba(0, 113, 227, 0.2);
+        }
+        @media (max-width: 768px) {
+            .profile-container {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* === CV LAYOUT === */
+        .cv-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 4rem; }
+        @media (max-width: 900px) { .cv-grid { grid-template-columns: 1fr; gap: 3rem; } }
+        .info-block { margin-bottom: 3rem; }
+        .info-header {
+            display: flex; justify-content: space-between; align-items: baseline;
+            margin-bottom: 0.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 0.5rem;
+        }
+        .info-title { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); }
+        .info-meta { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-primary); text-transform: uppercase;}
+        .info-subtitle { font-size: 1.1rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 1rem; }
+        .info-desc { color: var(--text-secondary); font-size: 1rem; line-height: 1.7; }
+        ul.dash-list { list-style: none; margin-top: 1rem; }
+        ul.dash-list li { position: relative; padding-left: 1.5rem; margin-bottom: 0.8rem; color: var(--text-secondary); }
+        ul.dash-list li::before { content: '—'; position: absolute; left: 0; color: var(--accent-primary); }
+
+        /* Skills Tags */
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+        .tech-tag {
+            font-family: var(--font-mono); font-size: 0.8rem; padding: 0.3rem 0.8rem;
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 4px; color: var(--text-primary); transition: all 0.2s;
+        }
+        .tech-tag:hover { border-color: var(--accent-primary); color: var(--accent-primary); }
+
+        /* === AGGIORNAMENTI (Dashboard) === */
+        .filters { display: flex; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .filter-chip {
+            background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-secondary);
+            padding: 0.5rem 1.5rem; border-radius: 20px; font-size: 0.9rem; cursor: pointer;
+            transition: all 0.3s; font-weight: 500;
+        }
+        .filter-chip.active, .filter-chip:hover { background: var(--text-primary); color: var(--bg-color); border-color: var(--text-primary); }
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; }
+        .bento-card {
+            background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 24px;
+            padding: 2rem; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s, box-shadow 0.3s;
+            display: flex; flex-direction: column; cursor: default;
+        }
+        .bento-card:hover { transform: translateY(-5px) scale(1.01); background: var(--card-hover); box-shadow: 0 20px 40px rgba(0,0,0,0.1); border-color: var(--accent-primary); }
+        .card-type {
+            font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--accent-primary); margin-bottom: 1rem;
+            display: flex; justify-content: space-between;
+        }
+        .card-type span.date { color: var(--text-secondary); }
+        .card-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary); line-height: 1.3; }
+        .card-desc { color: var(--text-secondary); font-size: 0.95rem; flex-grow: 1; margin-bottom: 1.5rem; }
+        .card-metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; border-top: 1px solid var(--glass-border); padding-top: 1.5rem; }
+        .metric { display: flex; flex-direction: column; }
+        .metric-val { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 700; color: var(--text-primary); }
+        .metric-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.05em; }
+
+        /* === ANIMATIONS === */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInOut { 0%, 100% { opacity: 0; transform: translate(-50%, -10px); } 50% { opacity: 1; transform: translate(-50%, 0); } }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="lang-it">
+
+    <!-- 3D MESH/TOPOLOGY BACKGROUND -->
+    <canvas id="bg-canvas"></canvas>
+    <div class="bg-overlay"></div>
+
+    <!-- UI CONTROLS (Lang & Theme) -->
+    <div class="controls-container">
+        <button class="lang-switch" id="langBtn" onclick="toggleLanguage()">IT</button>
+        <div class="theme-switch-wrapper" onclick="toggleTheme()">
+            <div class="pull-string"></div>
+            <svg class="lightbulb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 21h6v-1H9v1zm3-21C7.03 0 3 4.03 3 9c0 2.38 1.13 4.47 2.88 5.8l.12.09V18c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-3.11l.12-.09C19.87 13.47 21 11.38 21 9c0-4.97-4.03-9-9-9zm3 17H9v-2h6v2zm2.14-5.13l-.14.13V13h-8v-1.01l-.14-.13C6.41 10.74 5 8.95 5 9c0-3.86 3.14-7 7-7s7 3.14 7 7c0 .05-1.41 1.74-3.86 2.87z"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <h1 class="hero-title">LORENZO ROGHI</h1>
+        <h2 class="hero-role">Project Manager</h2>
+        <p class="hero-sub">
+            <span class="lang-it">Energie Rinnovabili &nbsp;•&nbsp; Progetti EPC &nbsp;•&nbsp; Data Center</span>
+            <span class="lang-en">Renewable Energy &nbsp;•&nbsp; EPC Projects &nbsp;•&nbsp; Data Centers</span>
+        </p>
+        <div class="scroll-indicator">
+            <span class="lang-it">↓ Scorri per esplorare</span>
+            <span class="lang-en">↓ Scroll to explore</span>
+        </div>
+    </section>
+
+    <!-- FLOATING NAVIGATION -->
+    <nav id="main-nav">
+        <button class="nav-btn active" onclick="switchView('cv', this)">
+            <span class="lang-it">Curriculum</span><span class="lang-en">Resume</span>
+        </button>
+        <button class="nav-btn" onclick="switchView('updates', this)">
+            <span class="lang-it">Dashboard Aggiornamenti</span><span class="lang-en">Updates Dashboard</span>
+        </button>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        
+        <!-- ================= CURRICULUM VIEW ================= -->
+        <div id="view-cv" class="view-section active">
+            
+            <div class="reveal info-block" style="max-width: 900px; margin-bottom: 4rem;">
+                <h2 class="section-title"><span class="lang-it">Profilo</span><span class="lang-en">Profile</span></h2>
+                
+                <div class="profile-container">
+                    <img src="images/FotoProfilo.jpg" alt="Lorenzo Roghi" class="profile-pic">
+                    <div>
+                        <p class="info-desc" style="font-size: 1.2rem; font-weight: 300;">
+                            <span class="lang-it">
+                                Project Manager (PM) con formazione tecnica ed esperienza nella progettazione di impianti elettrici e fotovoltaici, applicata a progetti complessi ad alto impatto tecnologico come infrastrutture Data Center.
+                                Dal 2025 in Solarys Innovative Solutions supporto la gestione di progetti EPC (Engineering, Procurement and Construction) in ambito energia rinnovabile, affiancando al rigore tecnico attività strategiche di pianificazione e coordinamento di team multidisciplinari.
+                            </span>
+                            <span class="lang-en">
+                                Project Manager (PM) with a technical background and expertise in electrical and photovoltaic systems design, applied to complex, high-tech projects such as Data Center infrastructures.
+                                Since 2025 at Solarys Innovative Solutions, I support the management of EPC (Engineering, Procurement and Construction) projects in the renewable energy sector, combining technical rigor with strategic planning and cross-functional team coordination.
+                            </span>
+                        </p>
+                        <div class="tag-cloud" style="margin-top: 1.5rem;">
+                            <span class="tech-tag">info@lorenzoroghi.it</span>
+                            <span class="tech-tag">+39 331 9152973</span>
+                            <a href="https://linkedin.com/in/lorenzoroghi" target="_blank" style="text-decoration:none;"><span class="tech-tag" style="cursor:pointer;">LinkedIn ↗</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cv-grid">
+                
+                <!-- LEFT COLUMN: EXPERIENCE -->
+                <div class="col-experience">
+                    <h2 class="section-title reveal"><span class="lang-it">Esperienza</span><span class="lang-en">Experience</span></h2>
+                    
+                    <div class="info-block reveal">
+                        <div class="info-header">
+                            <h3 class="info-title">Solarys Innovative Solutions</h3>
+                            <span class="info-meta">
+                                <span class="lang-it">Apr 2025 — Presente</span><span class="lang-en">Apr 2025 — Present</span>
+                            </span>
+                        </div>
+                        <h4 class="info-subtitle">Project Manager</h4>
+                        <ul class="dash-list">
+                            <li class="lang-it">Coordinamento tra team tecnici, fornitori e clienti in progetti EPC nel settore energia.</li>
+                            <li class="lang-en">Coordination between technical teams, suppliers, and clients in EPC energy projects.</li>
+                            
+                            <li class="lang-it">Pianificazione delle attività e monitoraggio dello Stato Avanzamento Lavori (SAL).</li>
+                            <li class="lang-en">Activity planning and project progress monitoring (Milestones tracking).</li>
+                            
+                            <li class="lang-it">Analisi dei rischi, ottimizzazione dei tempi e gestione risorse.</li>
+                            <li class="lang-en">Risk analysis, timeline optimization, and resource management.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-block reveal">
+                        <div class="info-header">
+                            <h3 class="info-title">Aruba Studio – Aruba S.p.A.</h3>
+                            <span class="info-meta">
+                                <span class="lang-it">Ott 2023 — Apr 2025</span><span class="lang-en">Oct 2023 — Apr 2025</span>
+                            </span>
+                        </div>
+                        <h4 class="info-subtitle">
+                            <span class="lang-it">Progettista Tecnico / Project Owner</span><span class="lang-en">Technical Designer / Project Owner</span>
+                        </h4>
+                        <ul class="dash-list">
+                            <li class="lang-it">Gestione progetti come Project Owner per reti elettriche BT/MT e impianti fotovoltaici nei Data Center.</li>
+                            <li class="lang-en">Project Owner managing LV/MV electrical networks and photovoltaic systems within Data Centers.</li>
+                            
+                            <li class="lang-it">Coordinamento fornitori e supervisione tecnica dei lavori in cantiere.</li>
+                            <li class="lang-en">Supplier coordination and technical supervision of on-site construction works.</li>
+                            
+                            <li class="lang-it">Pianificazione attività progettuali, definizione deliverable e supporto R&D interno per infrastrutture.</li>
+                            <li class="lang-en">Planning design activities, defining deliverables, and supporting internal infrastructure R&D.</li>
+                            
+                            <li class="lang-it">Redazione documentazione tecnica (as-built) e supporto alla direzione lavori.</li>
+                            <li class="lang-en">Drafting technical documentation (as-built) and providing support to construction management.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-block reveal">
+                        <div class="info-header">
+                            <h3 class="info-title">Aruba Studio – Aruba S.p.A.</h3>
+                            <span class="info-meta">
+                                <span class="lang-it">Mar 2023 — Ago 2023</span><span class="lang-en">Mar 2023 — Aug 2023</span>
+                            </span>
+                        </div>
+                        <h4 class="info-subtitle">
+                            <span class="lang-it">Stage Curriculare</span><span class="lang-en">Internship</span>
+                        </h4>
+                        <ul class="dash-list">
+                            <li class="lang-it">Supporto operativo alla progettazione di reti elettriche e impianti domotici.</li>
+                            <li class="lang-en">Operational support for the design of electrical networks and home automation systems.</li>
+                            
+                            <li class="lang-it">Attività di efficienza energetica e gestione tecnica sopralluoghi.</li>
+                            <li class="lang-en">Energy efficiency activities and technical site inspections management.</li>
+                        </ul>
+                    </div>
+                    
+                    <h2 class="section-title reveal" style="margin-top: 4rem;">
+                        <span class="lang-it">Esperienze Extra</span><span class="lang-en">Extra-Curricular</span>
+                    </h2>
+                    <div class="info-block reveal">
+                        <div class="info-header">
+                            <h3 class="info-title">Scout AGESCI (Gruppo Arezzo 7)</h3>
+                            <span class="info-meta">2008 — 2022</span>
+                        </div>
+                        <p class="info-desc">
+                            <span class="lang-it">Coordinamento attività educative e organizzazione eventi complessi. Sviluppo di soft skills fondamentali: leadership situazionale, teamwork logistico e comunicazione efficace.</span>
+                            <span class="lang-en">Coordination of educational activities and organization of complex events. Development of fundamental soft skills: situational leadership, logistical teamwork, and effective communication.</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: SKILLS & EDU -->
+                <div class="col-skills">
+                    
+                    <h2 class="section-title reveal">
+                        <span class="lang-it">Competenze</span><span class="lang-en">Stack & Skills</span>
+                    </h2>
+                    
+                    <div class="info-block reveal">
+                        <h4 class="info-subtitle" style="font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent-primary);">
+                            <span class="lang-it">/ Gestione</span><span class="lang-en">/ Management</span>
+                        </h4>
+                        <div class="tag-cloud">
+                            <span class="tech-tag">PM</span>
+                            <span class="tech-tag"><span class="lang-it">Progetti EPC</span><span class="lang-en">EPC Projects</span></span>
+                            <span class="tech-tag"><span class="lang-it">Analisi Rischi</span><span class="lang-en">Risk Analysis</span></span>
+                            <span class="tech-tag"><span class="lang-it">Pianificazione</span><span class="lang-en">Planning</span></span>
+                        </div>
+                    </div>
+
+                    <div class="info-block reveal">
+                        <h4 class="info-subtitle" style="font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent-primary);">
+                            <span class="lang-it">/ Ingegneria</span><span class="lang-en">/ Engineering</span>
+                        </h4>
+                        <div class="tag-cloud">
+                            <span class="tech-tag"><span class="lang-it">Reti BT/MT</span><span class="lang-en">LV/MV Grids</span></span>
+                            <span class="tech-tag"><span class="lang-it">Fotovoltaico</span><span class="lang-en">Photovoltaics</span></span>
+                            <span class="tech-tag">Data Center Infra</span>
+                            <span class="tech-tag"><span class="lang-it">Efficienza Energetica</span><span class="lang-en">Energy Efficiency</span></span>
+                        </div>
+                    </div>
+
+                    <div class="info-block reveal">
+                        <h4 class="info-subtitle" style="font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent-primary);">
+                            <span class="lang-it">/ Software</span><span class="lang-en">/ Software</span>
+                        </h4>
+                        <div class="tag-cloud">
+                            <span class="tech-tag">AutoCAD</span>
+                            <span class="tech-tag">Revit</span>
+                            <span class="tech-tag">Fusion 360</span>
+                            <span class="tech-tag">Progetto Integra</span>
+                            <span class="tech-tag">Dialux</span>
+                            <span class="tech-tag">ETS5/6</span>
+                            <span class="tech-tag">MS Project</span>
+                            <span class="tech-tag">Jira/Confluence</span>
+                        </div>
+                    </div>
+
+                    <h2 class="section-title reveal" style="margin-top: 4rem;">
+                        <span class="lang-it">Istruzione</span><span class="lang-en">Education</span>
+                    </h2>
+                    
+                    <div class="info-block reveal">
+                        <div class="info-header">
+                            <h3 class="info-title">ITS Energia e Ambiente</h3>
+                            <span class="info-meta">2021 — 2023</span>
+                        </div>
+                        <h4 class="info-subtitle">
+                            <span class="lang-it">Tecnico Superiore Gestione Impianti Energetici</span><span class="lang-en">Higher Technician in Energy Systems Management</span>
+                        </h4>
+                        <p class="info-desc" style="font-size: 0.9rem;">
+                            <span class="lang-it">Progettazione CAD 2D/3D, automazione industriale (PLC, CNC, IoT, KNX). Efficienza e riqualificazione.</span>
+                            <span class="lang-en">2D/3D CAD design, industrial automation (PLC, CNC, IoT, KNX). Energy efficiency and retrofitting.</span>
+                            <br><br>
+                            <strong style="color:var(--text-primary)"><span class="lang-it">Abilitazioni:</span><span class="lang-en">Certifications:</span></strong><br>
+                            <span class="lang-it">Certificazione energetica edifici</span><span class="lang-en">Building Energy Certification</span> (DPR 75/2013)<br>
+                            <span class="lang-it">Requisito tecnico</span><span class="lang-en">Technical Requirement Standard</span> DM 37/2008
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= AGGIORNAMENTI (DASHBOARD) VIEW ================= -->
+        <div id="view-updates" class="view-section">
+            
+            <div class="reveal filters">
+                <button class="filter-chip active" onclick="filterBento('all', this)">
+                    <span class="lang-it">Tutti i log</span><span class="lang-en">All logs</span>
+                </button>
+                <button class="filter-chip" onclick="filterBento('cantiere', this)">
+                    🏗️ <span class="lang-it">Cantieri EPC</span><span class="lang-en">EPC Sites</span>
+                </button>
+                <button class="filter-chip" onclick="filterBento('progetto3d', this)">
+                    ⚙️ <span class="lang-it">3D & Design</span><span class="lang-en">3D & Design</span>
+                </button>
+                <button class="filter-chip" onclick="filterBento('evento', this)">
+                    🌐 <span class="lang-it">Eventi</span><span class="lang-en">Events</span>
+                </button>
+            </div>
+
+            <div class="bento-grid">
+
+                <!-- CARD 1 -->
+                <div class="bento-card reveal bento-item cantiere">
+                    <div class="card-type">
+                        <span>SYS.LOG // <span class="lang-it">Cantiere</span><span class="lang-en">Site</span></span> 
+                        <span class="date"><span class="lang-it">GIU</span><span class="lang-en">JUN</span> 2026</span>
+                    </div>
+                    <h3 class="card-title">
+                        <span class="lang-it">Interconnessione Impianto FV Industriale</span><span class="lang-en">Industrial PV Plant Grid Connection</span>
+                    </h3>
+                    <p class="card-desc">
+                        <span class="lang-it">Completato l'allaccio alla rete di un impianto fotovoltaico da 1.2 MWp su copertura industriale. Gestione dell'intero ciclo EPC e supervisione al collaudo finale.</span>
+                        <span class="lang-en">Successfully completed grid connection for a 1.2 MWp rooftop industrial photovoltaic plant. Managed the entire EPC cycle and supervised final testing.</span>
+                    </p>
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <span class="metric-val">1.2 MWp</span>
+                            <span class="metric-label"><span class="lang-it">Potenza</span><span class="lang-en">Power</span></span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-val">100%</span>
+                            <span class="metric-label"><span class="lang-it">Target SAL</span><span class="lang-en">Progress Target</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 2 -->
+                <div class="bento-card reveal bento-item progetto3d">
+                    <div class="card-type">
+                        <span>SYS.LOG // 3D R&D</span> 
+                        <span class="date"><span class="lang-it">MAG</span><span class="lang-en">MAY</span> 2026</span>
+                    </div>
+                    <h3 class="card-title">
+                        <span class="lang-it">Progettazione Rack Data Center Custom</span><span class="lang-en">Custom Data Center Rack Design</span>
+                    </h3>
+                    <p class="card-desc">
+                        <span class="lang-it">Modellazione CAD (Fusion 360) per struttura di confinamento corridoio caldo/freddo. Ottimizzazione fluidodinamica per server ad alta densità.</span>
+                        <span class="lang-en">CAD modeling (Fusion 360) for hot/cold aisle containment structure. Fluid dynamic optimization for high-density servers.</span>
+                    </p>
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <span class="metric-val"><span class="lang-it">Parametrico</span><span class="lang-en">Parametric</span></span>
+                            <span class="metric-label"><span class="lang-it">Approccio CAD</span><span class="lang-en">CAD Approach</span></span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-val">Draft V2</span>
+                            <span class="metric-label"><span class="lang-it">Stato</span><span class="lang-en">Status</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 3 -->
+                <div class="bento-card reveal bento-item evento">
+                    <div class="card-type">
+                        <span>SYS.LOG // Network</span> 
+                        <span class="date">APR 2026</span>
+                    </div>
+                    <h3 class="card-title">
+                        <span class="lang-it">Workshop: Rinnovabili & Infrastrutture IT</span><span class="lang-en">Workshop: Renewables & IT Infra</span>
+                    </h3>
+                    <p class="card-desc">
+                        <span class="lang-it">Partecipazione a panel tecnico sull'integrazione di sistemi micro-grid a supporto della continuità operativa dei Data Center moderni.</span>
+                        <span class="lang-en">Participated in a technical panel on the integration of micro-grid systems to support the business continuity of modern Data Centers.</span>
+                    </p>
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <span class="metric-val">Firenze</span>
+                            <span class="metric-label"><span class="lang-it">Luogo</span><span class="lang-en">Location</span></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- SCRIPTS -->
+    <script>
+        // --- 1. LANGUAGE TOGGLE ---
+        function toggleLanguage() {
+            const body = document.body;
+            if (body.classList.contains('lang-it')) {
+                body.classList.remove('lang-it');
+                body.classList.add('lang-en');
+                document.getElementById('langBtn').innerText = 'EN';
+            } else {
+                body.classList.remove('lang-en');
+                body.classList.add('lang-it');
+                document.getElementById('langBtn').innerText = 'IT';
+            }
+        }
+
+        // --- 2. LIGHT/DARK MODE TOGGLE ---
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            if(document.body.classList.contains('light-mode')) {
+                meshColor = 'rgba(0, 113, 227, 0.2)'; 
+            } else {
+                meshColor = 'rgba(0, 210, 255, 0.15)'; 
+            }
+        }
+
+        // --- 3. VIEW SWITCHER (CV vs UPDATES) ---
+        function switchView(viewId, btn) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            document.querySelectorAll('.view-section').forEach(v => {
+                v.classList.remove('active');
+                v.style.display = 'none';
+            });
+
+            const target = document.getElementById('view-' + viewId);
+            target.style.display = 'block';
+            
+            setTimeout(() => {
+                target.classList.add('active');
+                ScrollReveal();
+            }, 50);
+
+            window.scrollTo({ top: window.innerHeight * 0.8, behavior: 'smooth' });
+        }
+
+        // --- 4. DASHBOARD FILTER ---
+        function filterBento(category, btn) {
+            document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const items = document.querySelectorAll('.bento-item');
+            items.forEach(item => {
+                item.style.display = 'none';
+                item.classList.remove('reveal', 'active'); 
+                
+                if (category === 'all' || item.classList.contains(category)) {
+                    item.style.display = 'flex';
+                    setTimeout(() => { item.classList.add('reveal', 'active'); }, 50);
+                }
+            });
+        }
+
+        // --- 5. SCROLL REVEAL OBSERVER ---
+        function ScrollReveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", ScrollReveal);
+        
+        // --- 6. NAV OPACITY ON SCROLL ---
+        window.addEventListener("scroll", () => {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > window.innerHeight * 0.5) {
+                nav.classList.add('visible');
+            } else {
+                nav.classList.remove('visible');
+            }
+        });
+
+        // --- 7. CANVAS BACKGROUND ANIMATION ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        let meshColor = 'rgba(0, 210, 255, 0.15)'; 
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 2;
+            }
+            update(scrollY) {
+                this.x += this.vx;
+                this.y += this.vy - (scrollY * 0.0005); 
+                if (this.x < 0 || this.x > width) this.vx = -this.vx;
+                if (this.y < 0) this.y = height;
+                if (this.y > height) this.y = 0;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = meshColor.replace('0.15', '0.5');
+                ctx.fill();
+            }
+        }
+
+        function initCanvas() {
+            resize();
+            particles = [];
+            let numParticles = window.innerWidth > 768 ? 80 : 40;
+            for (let i = 0; i < numParticles; i++) { particles.push(new Particle()); }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            let scrollY = window.scrollY;
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update(scrollY);
+                particles[i].draw();
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = meshColor;
+                        ctx.globalAlpha = 1 - (dist / 150);
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                        ctx.globalAlpha = 1;
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => { resize(); initCanvas(); });
+        initCanvas();
+        animate();
+        setTimeout(ScrollReveal, 100);
+
+    </script>
+</body>
+</html>
